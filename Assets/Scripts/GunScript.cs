@@ -8,6 +8,8 @@ public class GunScript : MonoBehaviour
     public float damage = 10f;
     public float range = 100f;
     public Camera fpsCam;
+    public float impactForce = 30f;
+    public GameObject bullet;
 
     // Update is called once per frame
     void Update()
@@ -25,8 +27,12 @@ public class GunScript : MonoBehaviour
             EnemyScript enemyScript = hit.transform.GetComponent<EnemyScript>();
             if (enemyScript != null){
                 enemyScript.TakeDamage(damage);
+                hit.transform.GetComponent<Rigidbody>().AddForce(-hit.normal * impactForce);
             }
         }
+
+        GameObject currentBullet = Instantiate(bullet, gameObject.transform.position, transform.rotation, transform);
+        Destroy(currentBullet,0.1f);
     }
 
 

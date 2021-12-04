@@ -31,7 +31,9 @@ public class PlayerController : MonoBehaviour
     void Move(){
 
         // We get platform-independet user input
-        moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+        moveDirection = transform.right * x + transform.forward * z;
         // Then we update the player's position
         transform.position += moveDirection * Time.deltaTime * playerSpeed; //Updates position, Time.deltaTime is time between frames
     
