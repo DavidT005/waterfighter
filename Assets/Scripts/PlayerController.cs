@@ -33,9 +33,19 @@ public class PlayerController : MonoBehaviour
         // We get platform-independet user input
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {     
+        }
         moveDirection = transform.right * x + transform.forward * z;
         // Then we update the player's position
-        transform.position += moveDirection * Time.deltaTime * playerSpeed; //Updates position, Time.deltaTime is time between frames
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            transform.position += moveDirection * Time.deltaTime * playerSpeed * 10f; //Updates position, Time.deltaTime is time between frames
+        }
+        else
+        {
+            transform.position += moveDirection * Time.deltaTime * playerSpeed; //Updates position, Time.deltaTime is time between frames
+        }
     
         if (Input.GetAxis("Mouse X") > 0){
 

@@ -21,10 +21,12 @@ public class EnemyScript : MonoBehaviour
     void Update()
     {
         Move();
+        Shoot();
     }
 
     public void TakeDamage(float ammout){
         health -= ammout;
+        //print("Enemy has " + health + " points");
         if (health <= 0f){
             Die();
         }
@@ -53,31 +55,22 @@ public class EnemyScript : MonoBehaviour
         {
             return;
         }
-
-
-
-
-
-        //theAgent.SetDestination(enemyDestination.transform.position);
-
-        /*
-        float distanceToDestination = Mathf.Abs((enemyDestination.transform.position - transform.position).magnitude);
-        if (distanceToDestination <= viewDistance && distanceToDestination >= attackDistance)
-        {
-            theAgent.SetDestination(enemyDestination.transform.position);
-        }
-        if (distanceToDestination <= viewDistance && distanceToDestination <= attackDistance)
-        {
-            theAgent.SetDestination(transform.position);    //Stays on current position
-            //TODO: attack logic
-        }
-        else
-        {
-            theAgent.SetDestination(transform.position);
-        }
-        */
     }
 
+    void Shoot(){
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 15f)){
+            //Debug.Log(hit.transform.name);
+
+            /*
+            EnemyScript enemyScript = hit.transform.GetComponent<EnemyScript>();
+            if (enemyScript != null){
+                enemyScript.TakeDamage(damage);
+                hit.transform.GetComponent<Rigidbody>().AddForce(-hit.normal * impactForce);
+            }
+            */
+        }
+    }
 
 
 }
