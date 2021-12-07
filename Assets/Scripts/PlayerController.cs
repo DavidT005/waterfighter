@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveDirection;
     public float playerSpeed;
 
+    private float health = 100;
+
 
 
 
@@ -61,5 +63,17 @@ public class PlayerController : MonoBehaviour
         if (IsGrounded() && Input.GetButtonDown("Jump")){
             rb.velocity = new Vector3(rb.velocity.x, jumpSpeed, rb.velocity.z);
         }
+    }
+
+    public void TakeDamage(float ammout)
+    {
+        health -= ammout;
+        if (health <= 0f){
+            Die();
+        }
+    }
+
+    void Die(){
+        Destroy(gameObject);
     }
 }

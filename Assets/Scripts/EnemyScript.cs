@@ -12,16 +12,17 @@ public class EnemyScript : MonoBehaviour
 
     public GameObject enemyDestination;
     NavMeshAgent theAgent;
+    public GameObject smoke;
 
     void Start()
     {
         theAgent = GetComponent<NavMeshAgent>();
+        InvokeRepeating("Shoot", Random.Range(0.5f, 1.5f), 2f);
     }
 
     void Update()
     {
         Move();
-        Shoot();
     }
 
     public void TakeDamage(float ammout){
@@ -41,9 +42,9 @@ public class EnemyScript : MonoBehaviour
         float distanceToPlayer = (enemyDestination.transform.position - transform.position).magnitude;
         if (distanceToPlayer <= 20)
         {
-            if (distanceToPlayer >= 10) theAgent.SetDestination(transform.position);
-            //TODO: attack logic
             transform.LookAt(enemyDestination.transform.position);
+            if (distanceToPlayer <= 10) theAgent.SetDestination(transform.position);
+            //Shoot();
         }
                     
         if (distanceToPlayer <= 30 && distanceToPlayer > 20)
@@ -59,16 +60,18 @@ public class EnemyScript : MonoBehaviour
 
     void Shoot(){
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 15f)){
-            //Debug.Log(hit.transform.name);
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 15f))
+        {
 
-            /*
-            EnemyScript enemyScript = hit.transform.GetComponent<EnemyScript>();
-            if (enemyScript != null){
-                enemyScript.TakeDamage(damage);
-                hit.transform.GetComponent<Rigidbody>().AddForce(-hit.normal * impactForce);
+            PlayerController playerScript = hit.transform.GetComponent<PlayerController>();
+
+            if (playerScript != null){
+                playerScript.TakeDamage(10);
+                //hit.transform.GetComponent<Rigidbody>().AddForce(-hit.normal * impactForce);
             }
-            */
+            GameObject currentSmoke = Instantiate(smoke, gameObject.transform.position, transform.rotation, transform);
+            Destroy(currentSmoke,0.2f);
+
         }
     }
 

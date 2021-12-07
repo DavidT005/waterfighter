@@ -26,7 +26,7 @@ public class GunScript : MonoBehaviour
             EnemyScript enemyScript = hit.transform.GetComponent<EnemyScript>();
             if (enemyScript != null){
                 enemyScript.TakeDamage(damage);
-                //hit.transform.GetComponent<Rigidbody>().AddForce(-hit.normal * impactForce);
+                hit.transform.GetComponent<Rigidbody>().AddForce(-hit.normal * impactForce);
             }
         }
 
