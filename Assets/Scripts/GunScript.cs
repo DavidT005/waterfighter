@@ -10,6 +10,8 @@ public class GunScript : MonoBehaviour
     public Camera fpsCam;
     public float impactForce = 30f;
     public GameObject bullet;
+    public Vector3 bulletPosition;
+    public Vector3 bulletRotation;
 
     // Update is called once per frame
     void Update()
@@ -30,7 +32,12 @@ public class GunScript : MonoBehaviour
             }
         }
 
-        GameObject currentBullet = Instantiate(bullet, gameObject.transform.position, transform.rotation, transform);
+        Quaternion rotation = Quaternion.Euler(-30f, 0f, 94.5f);
+
+        GameObject currentBullet = Instantiate(bullet, transform.position, transform.rotation, transform);
+        currentBullet.transform.localRotation = rotation;
+        currentBullet.transform.localPosition = new Vector3(-0.0738f, 0.0406f, 0.0017f);
+        currentBullet.transform.localScale = new Vector3(0.01f, 2f, 0.01f);
         Destroy(currentBullet,0.1f);
     }
 
