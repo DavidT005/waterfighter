@@ -13,11 +13,14 @@ public class EnemyScript : MonoBehaviour
     public GameObject enemyDestination;
     NavMeshAgent theAgent;
     public GameObject smoke;
+    Animator animator;
+
 
     void Start()
     {
         theAgent = GetComponent<NavMeshAgent>();
         InvokeRepeating("Shoot", Random.Range(0.5f, 1.5f), 2f);
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -27,29 +30,37 @@ public class EnemyScript : MonoBehaviour
 
     public void TakeDamage(float ammout){
         health -= ammout;
-        //print("Enemy has " + health + " points");
         if (health <= 0f){
             Die();
         }
     }
 
     void Die(){
-        Destroy(gameObject);
+        animator.SetBool("Alive", false);
+        //Destroy(gameObject);
     }
 
     void Move()
     {
+        
         float distanceToPlayer = (enemyDestination.transform.position - transform.position).magnitude;
         if (distanceToPlayer <= 20)
         {
+            
             transform.LookAt(enemyDestination.transform.position);
-            if (distanceToPlayer <= 10) theAgent.SetDestination(transform.position);
-            //Shoot();
+            if (distanceToPlayer <= 10)
+            {
+                theAgent.SetDestination(transform.position);
+                animator.SetBool("Running", false);
+            }
+            
+
         }
                     
         if (distanceToPlayer <= 30 && distanceToPlayer > 20)
         {
             theAgent.SetDestination(enemyDestination.transform.position);
+            animator.SetBool("Running", true);
         }
 
         if (distanceToPlayer > 30)
@@ -70,10 +81,13 @@ public class EnemyScript : MonoBehaviour
                 //hit.transform.GetComponent<Rigidbody>().AddForce(-hit.normal * impactForce);
             }
             GameObject currentSmoke = Instantiate(smoke, gameObject.transform.position, transform.rotation, transform);
-            Destroy(currentSmoke,0.2f);
+            Quaternion rotation = Quaternion.Euler(Random.Range(6,9), 0f, 0f);
+            currentSmoke.transform.localRotation = rotation;
+            currentSmoke.transform.localPosition = new Vector3(0.1f, 1.4f, 1f);
+            currentSmoke.transform.localScale = new Vector3(0.1f, 0.1f, 2f);
+            Destroy(currentSmoke,0.1f);
 
         }
     }
-
 
 }
